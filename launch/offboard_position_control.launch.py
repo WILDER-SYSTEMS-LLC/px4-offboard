@@ -45,6 +45,12 @@ def generate_launch_description():
     package_dir = get_package_share_directory('px4_offboard')
     return LaunchDescription([
         Node(
+            package='micro_ros_agent',
+            executable='micro_ros_agent',
+            name='micro_ros_agent',
+            arguments=["udp4", "-p", "8888", "-v4"]
+        ),
+        Node(
             package='px4_offboard',
             namespace='px4_offboard',
             executable='visualizer',
