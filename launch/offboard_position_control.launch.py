@@ -37,12 +37,23 @@ __contact__ = "jalim@ethz.ch"
 
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
+
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
 import os
 
 
 def generate_launch_description():
     package_dir = get_package_share_directory('px4_offboard')
+    launch_include = IncludeLaunchDescription(
+        XMLLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("foxglove_bridge"),
+                "launch/foxglove_bridge_launch.xml",
+            )
+        )
+    )
     return LaunchDescription([
         Node(
             package='micro_ros_agent',
@@ -69,5 +80,6 @@ def generate_launch_description():
             executable='rviz2',
             name='rviz2',
             arguments=['-d', [os.path.join(package_dir, 'visualize.rviz')]]
-        )
+        ),
+        launch_include
     ])
