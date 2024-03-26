@@ -145,7 +145,7 @@ class PX4Visualizer(Node):
     def create_arrow_marker(self, id, tail, vector):
         msg = Marker()
         msg.action = Marker.ADD
-        msg.header.frame_id = "map"
+        msg.header.frame_id = "platform"
         # msg.header.stamp = Clock().now().nanoseconds / 1000
         msg.ns = "arrow"
         msg.id = id
@@ -181,7 +181,7 @@ class PX4Visualizer(Node):
 
     def cmdloop_callback(self):
         vehicle_pose_msg = vector2PoseMsg(
-            "map", self.vehicle_local_position, self.vehicle_attitude
+            "platform", self.vehicle_local_position, self.vehicle_attitude
         )
         self.vehicle_pose_pub.publish(vehicle_pose_msg)
 
@@ -191,7 +191,7 @@ class PX4Visualizer(Node):
         self.vehicle_path_pub.publish(self.vehicle_path_msg)
 
         # Publish time history of the vehicle path
-        setpoint_pose_msg = vector2PoseMsg("map", self.setpoint_position, self.vehicle_attitude)
+        setpoint_pose_msg = vector2PoseMsg("platform", self.setpoint_position, self.vehicle_attitude)
         self.setpoint_path_msg.header = setpoint_pose_msg.header
         self.append_setpoint_path(setpoint_pose_msg)
         self.setpoint_path_pub.publish(self.setpoint_path_msg)
